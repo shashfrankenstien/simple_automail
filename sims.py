@@ -3,24 +3,27 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 
 
-class Message():
+class Message(object):
 	'''Takes recipient, sender, subject and body to initiate'''
 	def __init__(self, recipient='', sender='', subject='', body=''):
+		print recipient, sender, subject, body
 		self.message = MIMEMultipart()
+		self.sender = sender
+		self.recipient = recipient
 		self.setHeader(recipient, sender, subject)
 		self.setBody(body)
 
 	def setHeader(self, recipient, sender, subject):
 		self.message['From'] = sender
-		self.message['To'] = self.recipient
-		self.message['Subject'] = self.subject
+		self.message['To'] = recipient
+		self.message['Subject'] = subject
 
 	def setBody(self, body):
-		self.message.attach(MIMEText(self.body, 'plain'))
+		self.message.attach(MIMEText(body, 'plain'))
 
 
 
-class Mail():
+class Mail(object):
 	"""
 	It takes MAIL_USERNAME, MAIL_PASSWORD and MAIL_SERVER_PORT to initiate.
 	the 'send' method takes a Message object as an argument.
