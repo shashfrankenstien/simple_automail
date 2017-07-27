@@ -58,8 +58,3 @@ class Mail(object):
 			print '\n\n',str(e), '\n\n'
 		Mail._count += 1
 
-if __name__ == '__main__':
-	m = Message('shashank.gopikrishna@gmail.com', 'shashank.parodize@gmail.com', subject='Attachment Test', body='yolo')
-	with open('./sims.py', 'rb') as f:
-		m.attachment(f.read(), 'sims.py')
-	Mail('shashank.parodize@gmail.com', 'TakeMeDownToParodizeCity', 'smtp.gmail.com:587').send(m)
