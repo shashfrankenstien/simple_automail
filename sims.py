@@ -1,6 +1,7 @@
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
+from email.mime.application import MIMEApplication 
 
 
 class Message(object):
@@ -20,6 +21,11 @@ class Message(object):
 
 	def setBody(self, body):
 		self.message.attach(MIMEText(body, 'plain'))
+
+	def attachment(self, binary, filename):
+		part = MIMEApplication(binary, Name=filename)
+		part['Content-Disposition'] = 'attachment; filename="%s"' % filename
+		self.message.attach(part)
 
 
 
@@ -43,10 +49,17 @@ class Mail(object):
 			self.server.ehlo()
 			self.server.starttls()
 			self.server.login(self.username,self.password)
+			print('logged in ')
 			self.server.sendmail(msg.sender, msg.recipient, str(msg.message))
+			print('sent')
 			self.server.close()
+			print('closed')
 		except Exception, e: 
 			print '\n\n',str(e), '\n\n'
 		Mail._count += 1
 
-	
+if __name__ == '__main__':
+	m = Message('shashank.gopikrishna@gmail.com', 'shashank.parodize@gmail.com', subject='Attachment Test', body='yolo')
+	with open('./sims.py', 'rb') as f:
+		m.attachment(f.read(), 'sims.py')
+	Mail('shashank.parodize@gmail.com', 'TakeMeDownToParodizeCity', 'smtp.gmail.com:587').send(m)
